@@ -2,7 +2,6 @@ import time
 import math
 import sys
 import threading
-import asyncio
 
 import pygame
 
@@ -10,7 +9,7 @@ pygame.mixer.init()
 alert_sound = "alert.mp3"
 running_event = threading.Event()
 
-async def main():
+def main():
     time.sleep(1)
     print("---------------------------------\n")
 
@@ -30,13 +29,13 @@ async def main():
         sys.exit(1)
 
     if len(sys.argv) == 2:
-        await start_threads(seconds, label, repeats)
+        start_threads(seconds, label, repeats)
         sys.exit(2)
 
     label = sys.argv[2]
 
     if len(sys.argv) == 3:
-        await start_threads(seconds, label, repeats)
+        start_threads(seconds, label, repeats)
 
     try:
         repeats = int(sys.argv[3])
@@ -46,7 +45,7 @@ async def main():
         sys.exit(1)
 
     if len(sys.argv) == 4:
-        await start_threads(seconds, label, repeats)
+        start_threads(seconds, label, repeats)
         
     print("Too many arguments.\nUsage: python nudge.py <seconds> <label> <repeats>")
 
@@ -54,15 +53,19 @@ async def main():
 def handle_input():
     try:
         while True:
-            user_input = input()
-            if user_input.lower() == "quit":
-                print("Quitting the program...")
-                running_event.set()
+            try:
+                user_input = input()
+                if user_input.lower() == "quit":
+                    print("Quitting the program...")
+                    running_event.set()
+                    break
+            except EOFError:
+                pass
     except KeyboardInterrupt:
-        print("Turning off any timer and exiting...")       
+        print("Turning off any timer and exiting...")
+        running_event.set()
     finally:
         running_event.set()
-    running_event.set()
 
 
 def timer(seconds, label, repeats):
@@ -98,18 +101,21 @@ def timer(seconds, label, repeats):
         print(f"Resetting timer. {repeats} repeats left\n")
     timer(seconds, label, repeats)
 
-async def start_threads(seconds, label, repeats):
+def start_threads(seconds, label, repeats):
     timer_thread = threading.Thread(target=timer, args=(seconds, label, repeats), daemon=True)
     input_thread = threading.Thread(target=handle_input, daemon=True)
 
     timer_thread.start()
     input_thread.start()
 
-    while not running_event.is_set():
-        time.sleep(1)
+    try:
+        while not running_event.is_set():
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("Quitting nudge")
 
     pygame.quit()
     sys.exit(0)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
