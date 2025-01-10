@@ -60,6 +60,7 @@ def handle_input():
                     running_event.set()
                     break
             except EOFError:
+                # Ignoring this eof error which occurs after a keyboard interrupt.
                 pass
     except KeyboardInterrupt:
         print("Turning off any timer and exiting...")
