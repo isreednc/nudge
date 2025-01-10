@@ -36,4 +36,10 @@ python nudge.py <time_in_seconds> [label] [repeats]
 - [label]: A label for the timer (optional).
 - [repeats]: The number of times to repeat the timer (optional). If not specified, the timer will repeat indefinitely.
 
+You can exit the timer program at any time by:
+
+- Pressing Ctrl + C in the terminal.
+- Typing quit in the command line.
+
+
 
