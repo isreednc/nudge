@@ -13,3 +13,27 @@ A simple terminal-based timer that helps users stay on track by reminding them o
 1. Clone the repository:
    ```bash
    git clone https://github.com/isreednc/nudge.git
+   ```
+
+2. Navigate to the project directory:
+   ```bash
+   cd REPO_NAME
+   ```
+
+3. Install dependencies (pygame)
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Usage
+
+Run the program with the following command line arguments:
+```bash
+python nudge.py <time_in_seconds> [label] [repeats]
+```
+
+- <time_in_seconds>: The duration for the timer in seconds (required).
+- [label]: A label for the timer (optional).
+- [repeats]: The number of times to repeat the timer (optional). If not specified, the timer will repeat indefinitely.
+
+
