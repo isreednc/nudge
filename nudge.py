@@ -4,7 +4,6 @@ import sys
 import threading
 import asyncio
 
-# least trouble getting the audio to work
 import pygame
 
 pygame.mixer.init()
@@ -58,8 +57,7 @@ def handle_input():
             user_input = input()
             if user_input.lower() == "quit":
                 print("Quitting the program...")
-                pygame.quit()
-                sys.exit(1)
+                running_event.set()
     except KeyboardInterrupt:
         print("Turning off any timer and exiting...")       
     finally:
